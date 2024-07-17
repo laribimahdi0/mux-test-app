@@ -3,10 +3,9 @@ import MuxPlayer from "@mux/mux-player-react";
 import Mux from "@mux/mux-node";
 import VideoDetailForm from "@/components/VideoDetailForm";
 
-async function video({ params: { videoId } }) {
-  console.log("====>", videoId);
+async function video({ params: { videoId } , searchParams } ) {
 
-  const { video } = new Mux(
+    const { video } = new Mux(
     process.env.MUX_TOKEN_ID,
     process.env.MUX_TOKEN_SECRET
   );
@@ -14,7 +13,7 @@ async function video({ params: { videoId } }) {
   const asset = await video.assets.retrieve(videoId);
 
   const playbackIds = asset.playback_ids;
-  const playbackId = playbackIds.find((id) => id.policy === "public");
+  const playbackId = playbackIds.find((id) =>  id.policy === "public" || id.policy === "signed");
 
 
   return (
@@ -30,7 +29,7 @@ async function video({ params: { videoId } }) {
           />
         </div>
 
-        <VideoDetailForm playbackId ={playbackId?.id} />
+        <VideoDetailForm privateVideo={searchParams.private} playbackId={playbackId?.id} />
 
       </div>
     </div>

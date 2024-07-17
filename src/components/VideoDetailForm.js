@@ -6,13 +6,13 @@ import { addMedia } from "@/lib/indexDB";
 import withAuth from "@/lib/withAuth";
 import { useRouter } from 'next/navigation'
 
-function VideoDetailForm({playbackId}) {
+function VideoDetailForm({playbackId , privateVideo}) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const  router =  useRouter()
 
   const handleSubmit = async() => {
-    const media = { title, description  , playbackId};
+    const media = { title, description  , playbackId , "private": privateVideo=="true" ?true: false};
    await addMedia(media);
    router.push("/")
   };

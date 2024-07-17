@@ -1,5 +1,6 @@
 "use client";
 
+import CustomPlayer from "@/components/CustomPlayer";
 import { getAllMedia, getMedia } from "@/lib/indexDB";
 import useAuth from "@/lib/useAuth";
 import MuxPlayer from "@mux/mux-player-react";
@@ -49,21 +50,10 @@ export default function Home() {
         <div className="flex flex-col mt-12">
           {isLoading ? (
             <p>Loading video</p>
+          ) : medias?.length > 0 ? (
+            medias?.map((el) => <CustomPlayer isPrivate={el?.private} playbackId={el?.playbackId} href={`/video/${el.playbackId}`} />)
           ) : (
-            medias?.length> 0 ?
-            medias?.map((el) => (
-              <div
-                key={el.id}
-                className="bg-black aspect-video mb-8 -mx-4 flex shadow-xl"
-              >
-                <MuxPlayer
-                  className="w-full"
-                  playbackId={el.playbackId}
-                  accentColor="rgb(220 38 38)"
-                  streamType="on-demand"
-                />
-              </div>
-            )):"il n'ya pas des videos "
+            "il n'ya pas des videos "
           )}
         </div>
       </div>
