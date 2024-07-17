@@ -1,7 +1,8 @@
 import Mux from "@mux/mux-node";
 import dynamic from "next/dynamic";
-
-const MuxUploader = dynamic(() => import("@/component/MuxUploader"), {
+import { redirect } from "next/navigation";
+import jwt from "jsonwebtoken"
+const MuxUploader = dynamic(() => import("@/components/MuxUploader"), {
   loading: () => <p>Loading...</p>,
   ssr: false,
 });
@@ -10,27 +11,6 @@ const { video } = new Mux(
   process.env.MUX_TOKEN_ID,
   process.env.MUX_TOKEN_SECRET
 );
-
-const redirectToAsset = async (uploadId) => {
-  console.log("redirectToAsset");
-  let attempts = 0;
-  while (attempts <= 10) {
-    const upload = await video.uploads.retrieve(uploadId);
-    if (upload.asset_id) {
-      console.log(`/asset/${upload.asset_id}`);
-    } else {
-      // while onSuccess is a strong indicator that Mux has received the file
-      // and created the asset, this isn't a guarantee.
-      // In production, you might listen for the video.upload.asset_created webhook
-      // https://docs.mux.com/guides/listen-for-webhooks
-      // To keep things simple here,
-      // we'll just poll the API at an interval for a few seconds.
-      await waitForThreeSeconds();
-      attempts++;
-    }
-  }
-  throw new alert("No asset_id found for upload");
-};
 
 async function Page() {
   const directUpload = await video.uploads.create({
@@ -49,38 +29,41 @@ async function Page() {
     },
   });
 
+
+
+
   return (
     <div className="h-screen ">
       <h3 className="text-2xl">Téléverser une video</h3>
 
       <div className="flex space-x-4 max-w-2xl m-auto mt-6">
-        <div className>
+        <div>
           <p className="text-xl text-center ">Upload public video</p>
           <MuxUploader
             endpoint={directUpload.url}
             onSuccess={async () => {
               "use server";
-              console.log("success");
+              const upload = await video.uploads.retrieve(directUpload.id);
+              const assetId = upload.asset_id;
+              redirect(`/asset/${assetId}`);
             }}
-          />
+          />  
         </div>
 
-        <div className="w-1 bg-red-500" ></div>
+        <div className="w-1 bg-red-500"></div>
 
         <div>
           <p className="text-xl text-center">Upload Private Video</p>
           <MuxUploader
             endpoint={privateUpload.url}
-            onSuccess={async () => {
+            onSuccess={async (e) => {
               "use server";
-              console.log("sccuess");
+              const upload = await video.uploads.retrieve(privateUpload.id);
+              const assetId = upload.asset_id;
+              redirect(`/asset/${assetId}?private="true"`);
             }}
           />
         </div>
-      </div>
-
-      <div>
-        <h2> Liste des videos : </h2>
       </div>
     </div>
   );

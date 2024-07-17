@@ -9,13 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "idb": "^8.0.0",
-    "next": "14.2.5",
-    "react": "^18",
-    "react-dom": "^18",
     "@mux/mux-node": "^8",
     "@mux/mux-player-react": "^2",
-    "@mux/mux-uploader-react": "^1.0.0-beta.15"
+    "@mux/mux-uploader-react": "^1.0.0-beta.15",
+    "classnames": "^2.5.1",
+    "idb": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "next": "14.2.5",
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
     "eslint": "^8",

@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { addUser, getUser } from "@/lib/indexDB";
+import Input from "@/components/Input";
+import Button from "@/components/Button";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -38,21 +40,21 @@ export default function Register() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="h-screen">
         <form className="flex space-x-4" onSubmit={handleSubmit}>
-          <input
+          <Input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             required
           />
-          <input
+          <Input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
             required
           />
-          <button type="submit">Register</button>
+          <Button type="primary">Register</Button>
         </form>
       </div>
     </main>
