@@ -25,8 +25,6 @@ export default function Home() {
     });
   }, []);
 
-  console.log(medias);
-
   return (
     <main className="flex min-h-screen flex-col items-center  p-24">
       <div className=" flex space-x-4">
@@ -51,7 +49,13 @@ export default function Home() {
           {isLoading ? (
             <p>Loading video</p>
           ) : medias?.length > 0 ? (
-            medias?.map((el) => <CustomPlayer isPrivate={el?.private} playbackId={el?.playbackId} href={`/video/${el.playbackId}`} />)
+            medias?.map((el) => (
+              <CustomPlayer
+                isPrivate={el?.private}
+                playbackId={el?.playbackId}
+                href={`/video/${el.playbackId}`}
+              />
+            ))
           ) : (
             "il n'ya pas des videos "
           )}

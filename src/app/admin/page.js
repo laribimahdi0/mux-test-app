@@ -60,7 +60,7 @@ async function Page() {
               "use server";
               const upload = await video.uploads.retrieve(privateUpload.id);
               const assetId = upload.asset_id;
-              redirect(`/asset/${assetId}?private="true"`);
+              redirect(`/asset/${assetId}?private=true`);
             }}
           />
         </div>

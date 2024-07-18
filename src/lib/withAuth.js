@@ -8,8 +8,8 @@ const withAuth = (WrappedComponent) => {
 
 
     useEffect(() => {
-        const token = localStorage.getItem('user');
-        if (token) {
+        const user = localStorage.getItem('user');
+        if (user) {
           setIsAuthenticated(true);
         } else {
           router.replace('/login');
