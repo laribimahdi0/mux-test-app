@@ -8,17 +8,16 @@ import Button from "@/components/Button";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router=useRouter()
+  const router = useRouter();
   const handelLogin = async (email, password) => {
-    const user = await getUser(email);
-    if (user && user.password === password) {
-      localStorage.setItem("user", JSON.stringify(user));
-      router.push("/")
-
-      
-      
-    } else {
-      alert("Invalid email or password");
+    if (typeof window !== "undefined") {
+      const user = await getUser(email);
+      if (user && user.password === password) {
+        localStorage.setItem("user", JSON.stringify(user));
+        router.push("/");
+      } else {
+        alert("Invalid email or password");
+      }
     }
   };
   return (
@@ -40,7 +39,9 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Button type={"secondary"} onClick={() => handelLogin(email, password)}> Envoyer </Button>
+        <Button type={"secondary"} onClick={() => handelLogin(email, password)}>
+          Envoyer
+        </Button>
       </div>
     </div>
   );

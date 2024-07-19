@@ -1,36 +1,57 @@
 import { openDB } from 'idb';
 
-const dbPromise = openDB('auth-db', 1, {
-  upgrade(db) {
-    if (!db.objectStoreNames.contains('users')) {
-      db.createObjectStore('users', { keyPath: 'email' });
-      console.log('Created object store: users');
-    }
+const openDatabase = async () => {
+  if (typeof window === 'undefined' || !window.indexedDB) {
+    console.warn('indexedDB is not available in this environment');
+    return null;
+  }
 
-    if (!db.objectStoreNames.contains('media')) {
-      db.createObjectStore('media', { keyPath: 'id', autoIncrement: true });
-      console.log('Created object store: media');
-    }
-  },
-});
+  return openDB('auth-db', 1, {
+    upgrade(db) {
+      if (!db.objectStoreNames.contains('users')) {
+        db.createObjectStore('users', { keyPath: 'email' });
+        console.log('Created object store: users');
+      }
 
-export async function getUser(email) {
-  return (await dbPromise).get('users', email);
-}
+      if (!db.objectStoreNames.contains('media')) {
+        db.createObjectStore('media', { keyPath: 'id', autoIncrement: true });
+        console.log('Created object store: media');
+      }
+    },
+  });
+};
 
-export async function addUser(user) {
-  return (await dbPromise).add('users', user);
-}
+export const getUser = async (email) => {
+  const db = await openDatabase();
+  if (!db) return null;
 
+  return db.get('users', email);
+};
 
-export async function getMedia(id) {
-  return (await dbPromise).get('media', id);
-}
+export const addUser = async (user) => {
+  const db = await openDatabase();
+  if (!db) return null;
 
-export async function addMedia(media) {
-  return (await dbPromise).add('media', media);
-}
+  return db.add('users', user);
+};
 
-export async function getAllMedia() {
-  return (await dbPromise).getAll('media');
-}
+export const getMedia = async (id) => {
+  const db = await openDatabase();
+  if (!db) return null;
+
+  return db.get('media', id);
+};
+
+export const addMedia = async (media) => {
+  const db = await openDatabase();
+  if (!db) return null;
+
+  return db.add('media', media);
+};
+
+export const getAllMedia = async () => {
+  const db = await openDatabase();
+  if (!db) return [];
+
+  return db.getAll('media');
+};

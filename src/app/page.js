@@ -5,7 +5,7 @@ import CustomPlayer from "@/components/CustomPlayer";
 import { getAllMedia } from "@/lib/indexDB";
 import useAuth from "@/lib/useAuth";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect } from "react";
 import getStripe from "./utils/get-stripe";
 import { useRouter } from "next/navigation";
 import { UserIcon, CreditCardIcon } from "@heroicons/react/16/solid";
@@ -21,7 +21,7 @@ export default function Home() {
     localStorage.removeItem("user");
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setIsLoading(true);
     getAllMedia().then((res) => {
       setMedia(res);
@@ -94,8 +94,9 @@ export default function Home() {
           {isLoading ? (
             <p>Loading video</p>
           ) : medias?.length > 0 ? (
-            medias?.map((el) => (
+            medias?.map((el , index) => (
               <CustomPlayer
+                key={index}
                 isPrivate={el?.private}
                 playbackId={el?.playbackId}
                 href={`/video/${el.playbackId}`}

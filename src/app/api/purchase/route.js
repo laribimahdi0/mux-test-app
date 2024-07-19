@@ -24,7 +24,7 @@ export async function POST() {
         },
       ],
 
-      success_url: `${process.env.URL}/success`,
+      success_url: `${process.env.URL}/`,
       cancel_url: `${process.env.URL}/`,
     };
 
