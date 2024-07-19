@@ -27,7 +27,7 @@ function CustomPlayer({ playbackId, isPrivate, href, title, description }) {
     </div>
   ) : (
     <Link href={href}>
-      <div className="bg-black aspect-video mb-8 -mx-4 flex shadow-xl">
+      <div className="bg-white aspect-video mb-8 -mx-4 flex shadow-xl flex-col rounded-md p-2">
         <MuxPlayer
           className="w-full"
           playbackId={playbackId}
