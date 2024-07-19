@@ -1,7 +1,6 @@
 import Mux from "@mux/mux-node";
 import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
-import jwt from "jsonwebtoken"
 const MuxUploader = dynamic(() => import("@/components/MuxUploader"), {
   loading: () => <p>Loading...</p>,
   ssr: false,
@@ -29,9 +28,6 @@ async function Page() {
     },
   });
 
-
-
-
   return (
     <div className="h-screen ">
       <h3 className="text-2xl">Téléverser une video</h3>
@@ -47,7 +43,7 @@ async function Page() {
               const assetId = upload.asset_id;
               redirect(`/asset/${assetId}`);
             }}
-          />  
+          />
         </div>
 
         <div className="w-1 bg-red-500"></div>

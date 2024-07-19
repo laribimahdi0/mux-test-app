@@ -12,12 +12,14 @@
     "@mux/mux-node": "^8",
     "@mux/mux-player-react": "^2",
     "@mux/mux-uploader-react": "^1.0.0-beta.15",
+    "@stripe/stripe-js": "^4.1.0",
     "classnames": "^2.5.1",
     "idb": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
     "next": "14.2.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "stripe": "^16.2.0"
   },
   "devDependencies": {
     "eslint": "^8",

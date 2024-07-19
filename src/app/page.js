@@ -1,14 +1,19 @@
 "use client";
 
+import Button from "@/components/Button";
 import CustomPlayer from "@/components/CustomPlayer";
-import { getAllMedia, getMedia } from "@/lib/indexDB";
+import { getAllMedia } from "@/lib/indexDB";
 import useAuth from "@/lib/useAuth";
-import MuxPlayer from "@mux/mux-player-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import getStripe from "./utils/get-stripe";
+import { useRouter } from "next/navigation";
+
+
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
+  const router = useRouter()
 
   const [medias, setMedia] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +29,31 @@ export default function Home() {
       setIsLoading(false);
     });
   }, []);
+
+  const handlePayment = async () => {
+    try {
+
+
+      const response = await fetch("api/purchase/", {
+        method: "post",
+       // body: JSON.stringify({ itineraryId: itinerary.id }),
+      });
+      
+      const json = await response.json();
+      if (!json.ok) {
+        throw new Error("Something went wrong");
+      }
+
+      const stripe = await getStripe();
+      if (!stripe) {
+        throw new Error("Something went wrong");
+      }
+
+      await stripe.redirectToCheckout({ sessionId: json.result.id });
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center  p-24">
@@ -41,6 +71,8 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      <Button onClick={handlePayment}>Purchase</Button>
 
       <div>
         <h3 className="text-2xl">List des Media</h3>
