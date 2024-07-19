@@ -23,7 +23,7 @@ function CustomPlayer({ playbackId, isPrivate, href, title, description }) {
         accentColor="rgb(220 38 38)"
         streamType="on-demand"
       />
-      <InfoPlayer title={title} description={description} isPrivate />
+      <InfoPlayer title={title} description={description} isPrivate={isPrivate} />
     </div>
   ) : (
     <Link href={href}>
@@ -34,6 +34,8 @@ function CustomPlayer({ playbackId, isPrivate, href, title, description }) {
           accentColor="rgb(220 38 38)"
           streamType="on-demand"
         />
+       <InfoPlayer title={title} description={description} isPrivate={isPrivate} />
+
       </div>
     </Link>
   );
