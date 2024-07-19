@@ -9,8 +9,10 @@ async function video({ params: { videoId } , searchParams } ) {
     process.env.MUX_TOKEN_ID,
     process.env.MUX_TOKEN_SECRET
   );
+  const upload = await video.uploads.retrieve(videoId);
+  const assetId = upload.asset_id;
 
-  const asset = await video.assets.retrieve(videoId);
+  const asset = await video.assets.retrieve(assetId);
 
   const playbackIds = asset.playback_ids;
   const playbackId = playbackIds.find((id) =>  id.policy === "public" || id.policy === "signed");
